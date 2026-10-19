@@ -1,0 +1,17 @@
+body{
+   background: midnightblue;
+  color: white;
+}
+header {
+  background: darkslategray;
+  border-bottom: 3px solid teal;
+}
+nav button {
+  background: #14b8a6;
+  color: #0f172a;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
