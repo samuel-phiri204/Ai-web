@@ -2,14 +2,14 @@ body {
   margin: 0;
   font-family: Georgia, "Times New Roman", serif;
   background: white;
-  color: #1a1a1a;
+  color: black;
 }
 
 header {
-  background: #14b8a6;
+  background: rgb(0, 174, 255);
   padding: 24px;
   text-align: center;
-  border-bottom: 4px solid #1a1a1a;
+  border-bottom: 4px solid black;
 }
 
 h1 {
@@ -19,17 +19,17 @@ h1 {
 nav button {
   background: orange;
   color: #1a1a1a;
-  border: 3px solid #1a1a1a;
+  border: 3px solid black;
   padding: 10px 20px;
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
-  box-shadow: 4px 4px 0 #1a1a1a;
+  box-shadow: 4px 4px 0 black;
 }
 
 nav button:hover {
   transform: translate(2px, 2px);
-  box-shadow: 2px 2px 0 #1a1a1a;
+  box-shadow: 2px 2px 0 black;
 }
 
 main {
@@ -45,17 +45,17 @@ table {
 
 td {
   background: white;
-  border: 3px solid #1a1a1a;
+  border: 3px solid black;
   box-shadow: 6px 6px 0 orange;
 }
 
 td:hover {
-  background: #14b8a6;
+  background: rgb(0, 174, 255);
 }
 
 td a {
   display: block;
-  color: #1a1a1a;
+  color: black;
   text-decoration: none;
 }
 
@@ -65,14 +65,14 @@ section {
 }
 
 input[type="file"] {
-  border: 3px dashed #14b8a6;
+  border: 3px dashed rgb(0, 174, 255);
   padding: 14px;
   background: white;
 }
 
 footer {
-  background: #14b8a6;
-  border-top: 4px solid #1a1a1a;
+  background: rgb(0, 174, 255);
+  border-top: 4px solid black;
   padding: 20px;
   text-align: center;
 }
