@@ -9,7 +9,7 @@
   <header>
     <h1>welcome to study page</h1>
     <nav>
-      <button id="about">about</button>
+      <a href="about.html"><button>About</button></a>
     </nav>
   </header>
 
@@ -17,15 +17,15 @@
     <table border="2" cellpadding="20">
       <tr>
         <td width="150" height="150" align="center">
-          <a href="dsa.html">DSA BOOKS</a>
-            <h3>DSA</h3>
+          <a href="dsa.html">
+            <h3>DSA BOOKS</h3>
             <p>Data structures and algorithms</p>
           </a>
         </td>
 
         <td width="150" height="150" align="center">
-          <a href="multimedia.html"> FMT BOOKS</a>
-            <h3>Multimedia</h3>
+          <a href="multimedia.html">
+            <h3>FMT BOOKS</h3>
             <p>Graphics, audio and video</p>
           </a>
         </td>
@@ -36,7 +36,7 @@
       <h2>Upload a PDF</h2>
       <input type="file" id="pdfInput" accept="application/pdf">
       <p id="fileName"></p>
-      <iframe id="pdfPreview" width="100%" height="600" style="display:none;"></iframe>
+      <div id="pdfText"></div>
     </section>
   </main>
 
@@ -44,25 +44,80 @@
     <!-- footer content -->
   </footer>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script>
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
     const input = document.getElementById("pdfInput");
     const nameText = document.getElementById("fileName");
-    const preview = document.getElementById("pdfPreview");
+    const pdfText = document.getElementById("pdfText");
 
-    input.addEventListener("change", () => {
+    input.addEventListener("change", async () => {
       const file = input.files[0];
       if (!file) return;
 
       if (file.type !== "application/pdf") {
         nameText.textContent = "Please choose a PDF file.";
-        preview.style.display = "none";
         return;
       }
 
-      nameText.textContent = "Selected: " + file.name;
-      preview.src = URL.createObjectURL(file);
-      preview.style.display = "block";
+      nameText.textContent = "Reading " + file.name + "...";
+      pdfText.innerHTML = "";
+
+      try {
+        const buffer = await file.arrayBuffer();
+        const pdf = await pdfjsLib.getDocument({ data: buffer }).promise;
+        let foundText = false;
+
+        for (let i = 1; i <= pdf.numPages; i++) {
+          const page = await pdf.getPage(i);
+          const viewport = page.getViewport({ scale: 1.4 });
+
+          const pageDiv = document.createElement("div");
+          pageDiv.className = "pdfPage";
+          pageDiv.style.width = viewport.width + "px";
+          pageDiv.style.height = viewport.height + "px";
+
+          const canvas = document.createElement("canvas");
+          canvas.width = viewport.width;
+          canvas.height = viewport.height;
+          pageDiv.appendChild(canvas);
+
+          const layer = document.createElement("div");
+          layer.className = "textLayer";
+          layer.style.setProperty("--scale-factor", viewport.scale);
+          pageDiv.appendChild(layer);
+
+          pdfText.appendChild(pageDiv);
+
+          await page.render({
+            canvasContext: canvas.getContext("2d"),
+            viewport: viewport
+          }).promise;
+
+          const content = await page.getTextContent();
+          if (content.items.length) foundText = true;
+          pdfjsLib.renderTextLayer({
+            textContentSource: content,
+            container: layer,
+            viewport: viewport,
+            textDivs: []
+          });
+        }
+
+        nameText.textContent = "Loaded: " + file.name + " (" + pdf.numPages + " pages)";
+        if (!foundText) {
+          nameText.textContent = "No text found. This PDF may be scanned images.";
+        }
+      } catch (err) {
+        nameText.textContent = "Could not read this PDF.";
+      }
     });
   </script>
+
+  <button id="askBtn">Ask AI</button>
+  <div id="answerBox"></div>
+  <script src="ask.js"></script>
 </body>
 </html>

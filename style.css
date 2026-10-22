@@ -76,3 +76,72 @@ footer {
   padding: 20px;
   text-align: center;
 }
+
+/* PDF viewer */
+#pdfText {
+  max-height: 700px;
+  overflow: auto;
+  border: 3px solid black;
+  background: rgb(0, 174, 255);
+  padding: 16px;
+  margin-top: 16px;
+}
+
+.pdfPage {
+  position: relative;
+  margin: 0 auto 16px;
+  background: white;
+  box-shadow: 4px 4px 0 orange;
+}
+
+.pdfPage canvas {
+  display: block;
+}
+
+.textLayer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  line-height: 1;
+}
+
+.textLayer span {
+  position: absolute;
+  color: transparent;
+  white-space: pre;
+  cursor: text;
+  transform-origin: 0% 0%;
+}
+
+.textLayer ::selection {
+  background: rgba(255, 165, 0, 0.4);
+}
+
+/* Ask AI button and answer box */
+#askBtn {
+  display: none;
+  position: absolute;
+  z-index: 10;
+  background: orange;
+  color: #1a1a1a;
+  border: 3px solid black;
+  padding: 6px 12px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#answerBox {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 320px;
+  max-height: 300px;
+  overflow: auto;
+  background: white;
+  color: black;
+  border: 3px solid black;
+  box-shadow: 6px 6px 0 orange;
+  padding: 14px;
+  z-index: 10;
+}
