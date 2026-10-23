@@ -1,3 +1,5 @@
+const API_URL = "https://webai-backend.vercel.app/ask";
+
 const askBtn = document.getElementById("askBtn");
 const answerBox = document.getElementById("answerBox");
 let selectedText = "";
@@ -20,7 +22,7 @@ askBtn.addEventListener("click", async () => {
   answerBox.style.display = "block";
   answerBox.textContent = "Thinking...";
   try {
-    const res = await fetch("http://localhost:5000/ask", {
+    const res = await fetch(API_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ text: selectedText })
