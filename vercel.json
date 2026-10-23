@@ -1,6 +1,5 @@
 {
   "framework": null,
-  "buildCommand": "",
-  "outputDirectory": ".",
+  "outputDirectory": "public",
   "rewrites": [{ "source": "/", "destination": "/study.html" }]
 }
