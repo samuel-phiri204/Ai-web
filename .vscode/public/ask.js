@@ -1,4 +1,4 @@
-const API_URL = "https://webai-backend.vercel.app/ask";
+const API_URL = "https://studyaiweb.pythonanywhere.com/ask";
 
 const askBtn = document.getElementById("askBtn");
 const answerBox = document.getElementById("answerBox");
