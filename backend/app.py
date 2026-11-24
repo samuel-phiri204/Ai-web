@@ -6,31 +6,42 @@ from google import genai
 from google.genai import types
 
 load_dotenv()
-app = Flask(__name__)
+app = Flask(__name__, static_folder="public", static_url_path="")
 CORS(app)
-client = genai.Client()  # reads GEMINI_API_KEY from .env
+client = genai.Client(http_options=types.HttpOptions(timeout=15000))  # reads GEMINI_API_KEY from .env
 
-MODELS = ["gemini-flash-latest", "gemini-2.5-flash", "gemini-2.5-flash-lite"]
+MODELS = ["gemini-3.5-flash", "gemini-3.5-flash-lite", "gemini-flash-lite-latest", "gemini-3.1-flash-lite"]
 
 def generate(text):
     last_error = None
     for model in MODELS:
-        for attempt in range(2):
-            try:
-                response = client.models.generate_content(
-                    model=model,
-                    contents=text,
-                    config=types.GenerateContentConfig(
-                        system_instruction="You are a study helper for university students. Explain or answer the highlighted text clearly and briefly.",
-                        max_output_tokens=600,
-                    ),
-                )
-                return response.text
-            except Exception as e:
-                last_error = e
-                print(model, e)
-                time.sleep(1)
+        try:
+            response = client.models.generate_content(
+                model=model,
+                contents=text,
+                config=types.GenerateContentConfig(
+                    system_instruction=(
+    "You are an exam coach for university students. "
+    "Answer the highlighted text the way a strong student would in a written exam. "
+    "Start with a clear definition or direct answer in one or two sentences. "
+    "Then give the key points as short numbered points, using the correct technical terms. "
+    "Add a brief example or diagram description where it helps. "
+    "If the question would normally carry marks, say roughly how many points a full answer needs. "
+    "Keep it focused and avoid long introductions."
+),
+                    max_output_tokens=1000,
+                ),
+            )
+            return response.text
+        except Exception as e:
+            last_error = e
+            print(model, e)
+            time.sleep(1)
     raise last_error
+
+@app.get("/")
+def home():
+    return app.send_static_file("study.html")
 
 @app.post("/ask")
 def ask():

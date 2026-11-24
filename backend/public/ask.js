@@ -1,4 +1,4 @@
-const API_URL = "https://studyaiweb.pythonanywhere.com/ask";
+const API_URL = "/ask";
 
 const askBtn = document.getElementById("askBtn");
 const answerBox = document.getElementById("answerBox");
